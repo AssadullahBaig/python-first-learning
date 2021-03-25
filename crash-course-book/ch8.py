@@ -191,7 +191,7 @@ def show_magicians(magicians):
         print(magician.title())
 
 
-magicians = ["harry potter", " ron wesly", "john matters"]
+magicians = ["harry potter", "ron wesly", "john matters"]
 show_magicians(magicians)
 
 
@@ -244,7 +244,7 @@ def make_great(magicians):
 magicians = ["harry potter", "ron wesly", "john matters"]
 show_magicians(magicians)
 print("\nGreat magicians:")
-great_magicians = make_great(magicians[:])
+great_magicians = make_great(magicians[:])  # Prevents a function from modifying a list.. AKA [:] = slice notation
 show_magicians(great_magicians)
 print("\nOriginal magicians:")
 show_magicians(magicians)
@@ -290,8 +290,8 @@ def make_Car(manufacturer, model, **options):
     car_dict = {
         "manfacturer": manufacturer.title(),
         "model": model.title(),
-    }
-    for key, value in options.items():
+        }
+    for key, value in options.items():  # The items () method returns a view object.
         car_dict[key] = value
     return car_dict
 
