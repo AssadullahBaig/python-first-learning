@@ -35,6 +35,14 @@
 #       Total Price: $15
 #       Thank you for ordering with us
 
+# New Requirements
+# Support different toppings for different pizzas
+
+# Next Tasks
+# 1. Fulfill the original requirement above 100%
+# 2. Use list of dict instead of the zip function
+# 3. Remove redundant code in the start_system function
+# 4. Add the new requirement if possible
 
 # Constraints ###
 # No global variables. The functions should return the output they generate
@@ -46,7 +54,7 @@
 # Compact output to minimize screen space
 
 
-def ordering_pizza(available_pizzas):
+def order_pizza(available_pizzas):
     order = ("\nPlease specify the pizza or type quit to finish: ")
     print("\nAvailable Pizzas are: ")
     for pizza, prices in available_pizzas.items():
@@ -60,23 +68,22 @@ def ordering_pizza(available_pizzas):
         else:
             print("Im sorry we don't have that pizza.")
 
-def ordering_toppings(available_toppings):
+def order_toppings(available_toppings):
     extra_toppings =("\nPlease specify topping or type quit to finish ordering: ")
     print("\nAvailable toppings are: ")
     for topping, prices in available_toppings.items():
         print(topping + ": " + str(prices) + ", ", end="")
-    toppins_list = []
+    toppings_list = []
     while True:
-        toppings = input(extra_toppings)
-        if toppings == "quit":
+        topping = input(extra_toppings)
+        if topping == "quit":
             break
-        if toppings != "quit" and toppings in available_toppings:
-            toppins_list.append(toppings)
-            print(f"I'll add {toppings} to your pizza")
-            # return 
-        elif toppings not in available_toppings:
+        elif topping in available_toppings:
+            toppings_list.append(topping)
+            print(f"I'll add {topping} to your pizza")
+        else:
             print("Im sorry we don't have that topping.")
-    return toppins_list
+    return toppings_list
    
 def should_order_extra_pizza():
     extra_pizza = input("Would you like to order another pizza? (yes/no): ")
@@ -96,7 +103,6 @@ def finalize_order(available_pizzas, ordered_pizzas, available_toppings, ordered
     print("Total Cost:" + str(total_cost))
     print("Thank you for ordering with us")
 
-
 def start_system():
     available_pizzas = {'spicy': 600, 'mexican': 700, 'calzone': 600, 'tikka': 700, 'veg': 650}
     available_toppings = {'mushroom': 10, 'onions': 15, 'green pepper': 10, 'extra cheese': 40}
@@ -104,19 +110,19 @@ def start_system():
     ordered_pizzas = []
     ordered_toppings = []
 
-    pizza = ordering_pizza(available_pizzas)
-    toppings = ordering_toppings(available_toppings)
-
+    pizza = order_pizza(available_pizzas)
+    toppings = order_toppings(available_toppings)
     ordered_pizzas.append(pizza)
     ordered_toppings.append(toppings)
     print(f"Preparing one {pizza} pizza with toppings: {', '.join(toppings)}")
 
     while(should_order_extra_pizza()):
-        pizza = ordering_pizza(available_pizzas)
-        toppings = ordering_toppings(available_toppings)
+        pizza = order_pizza(available_pizzas)
+        toppings = order_toppings(available_toppings)
         ordered_pizzas.append(pizza)
         ordered_toppings.append(toppings)
         print(f"Preparing one {pizza} pizza with toppings: {', '.join(toppings)}")
 
     finalize_order(available_pizzas, ordered_pizzas, available_toppings, ordered_toppings)
+
 start_system()
