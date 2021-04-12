@@ -53,6 +53,10 @@
 # Variable names should be like nouns e.g. toppings, complete_order
 # Compact output to minimize screen space
 
+# New Tasks
+# 1. Add support for different toppings for different pizzas
+# 2. Order another pizza prompt should show error when input is neither yes nor no
+
 
 def order_pizza(available_pizzas):
     order = ("\nPlease specify the pizza or type quit to finish: ")
@@ -96,13 +100,14 @@ def finalize_order(available_pizzas, available_toppings, total_order):
     print("Thank you for ordering with us")
 
 def start_system():
+    total_order = []
     available_pizzas = {'spicy': 600, 'mexican': 700, 'calzone': 600, 'tikka': 700, 'veg': 650}
     available_toppings = {'mushroom': 10, 'onions': 15, 'green pepper': 10, 'extra cheese': 40}
-    print("Hi, welcome to our Saleem Shady Pizza Ordering")
-    total_order = []
 
-    ordering_another_pizza = True
-    while(ordering_another_pizza is True):
+    print("Hi, welcome to our Saleem Shady Pizza Ordering")
+
+    is_ordering_another_pizza = True
+    while is_ordering_another_pizza:
         pizza = order_pizza(available_pizzas)
         toppings = order_toppings(available_toppings)
         topping_price = 0
@@ -114,11 +119,8 @@ def start_system():
             'toppings': toppings
             })
         print(f"Preparing one {pizza} pizza with toppings: {', '.join(toppings)}")
-        extra_pizza = input("Would you like to order another pizza? (yes/no): ")
-        if extra_pizza == "no":
-            ordering_another_pizza = False
-        else:
-            ordering_another_pizza = True
+        extra_pizza_input = input("Would you like to order another pizza? (yes/no): ")
+        is_ordering_another_pizza = extra_pizza_input != 'no'
 
     finalize_order(available_pizzas, available_toppings, total_order)
 
