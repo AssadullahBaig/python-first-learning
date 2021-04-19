@@ -57,7 +57,6 @@
 # 1. Add support for different toppings for different pizzas
 # 2. Order another pizza prompt should show error when input is neither yes nor no
 
-
 def order_pizza(available_pizzas):
     order = ("\nPlease specify the pizza or type quit to finish: ")
     print("\nAvailable Pizzas are: ")
@@ -71,57 +70,63 @@ def order_pizza(available_pizzas):
         else:
             print("Im sorry we don't have that pizza.")
 
-def order_toppings(available_toppings):
+def order_toppings(pizza, available_toppings, supported_toppings):
     extra_toppings =("\nPlease specify topping or type quit to finish ordering: ")
     print("\nAvailable toppings are: ")
-    for topping, prices in available_toppings.items():
-        print(topping + ": " + str(prices) + ", ", end="")
+    for topping in supported_toppings[pizza]:
+        price = available_toppings[topping]
+        print(topping + ": " + str(price) + ", ", end="")
     toppings_list = []
     while True:
         topping = input(extra_toppings)
         if topping == "quit":
             break
-        elif topping in available_toppings:
+        elif topping in supported_toppings[pizza]:
             toppings_list.append(topping)
             print(f"I'll add {topping} to your pizza")
         else:
             print("Im sorry we don't have that topping.")
     return toppings_list
+   
 
-def finalize_order(available_pizzas, available_toppings, total_order):
+def finalize_order(available_pizzas, available_toppings, total_stuff):
     total_cost = 0
     print('Your ordered pizzas:')
     
-    for i in total_order:
+    for i in total_stuff:
         print(f"{i['pizza']} pizza with toppings: {', '.join(o for o in i['toppings'])} : ${i['price']}" )
         total_cost += i['price']
-  
     print("Total Cost: $" + str(total_cost))
     print("Thank you for ordering with us")
 
 def start_system():
-    total_order = []
     available_pizzas = {'spicy': 600, 'mexican': 700, 'calzone': 600, 'tikka': 700, 'veg': 650}
     available_toppings = {'mushroom': 10, 'onions': 15, 'green pepper': 10, 'extra cheese': 40}
-
     print("Hi, welcome to our Saleem Shady Pizza Ordering")
-
-    is_ordering_another_pizza = True
-    while is_ordering_another_pizza:
+    total_stuff = []
+    supported_toppings = {
+        "spicy": ("green pepper", "onions"),
+        "mexican": ("extra cheese", "onions"),
+        "calzone": ("extra cheese", "green pepper"),
+        "tikka": ("onions", "mushroom", "extra cheese"),
+        "veg": ("onions", "mushroom"),
+    }
+    another_pizza = True
+    while(another_pizza is True):
         pizza = order_pizza(available_pizzas)
-        toppings = order_toppings(available_toppings)
+        toppings = order_toppings(pizza, available_toppings, supported_toppings)
         topping_price = 0
         for i in toppings:
             topping_price += available_toppings[i]
-        total_order.append({
-            'pizza': pizza,
-            'price': available_pizzas[pizza] + topping_price,
-            'toppings': toppings
-            })
+        total_stuff.append({'pizza': pizza, 'price': available_pizzas[pizza]+topping_price, 'toppings': toppings})
         print(f"Preparing one {pizza} pizza with toppings: {', '.join(toppings)}")
-        extra_pizza_input = input("Would you like to order another pizza? (yes/no): ")
-        is_ordering_another_pizza = extra_pizza_input != 'no'
+        extra_pizza = input("Would you like to order another pizza? (yes/no): ")
+        if extra_pizza == "no":
+            another_pizza = False
+        else:
+            another_pizza = True
 
-    finalize_order(available_pizzas, available_toppings, total_order)
+
+    finalize_order(available_pizzas, available_toppings, total_stuff)
 
 start_system()
