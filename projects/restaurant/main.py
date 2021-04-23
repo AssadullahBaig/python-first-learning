@@ -157,7 +157,7 @@ def pizza_main():
 
 def burger_main():
     available_burgers = {"zinger": 200, "fish": 350, "beef": 250, "patty": 150, "grilled": 260}
-    total_burger= []
+    total_burger = []
     another_burger = True
     while(another_burger is True):
         burger = order_burger(available_burgers)
@@ -172,7 +172,7 @@ def burger_main():
 
 def order_select():
     print("Hi, welcome to our Saleem Shady food Ordering")
-    menu = input("Please select the type of food you want (Burger, pizza): ")
+    menu = input("Please select the type of food you want (burger, pizza): ")
     menu = menu.lower()
     if menu == "pizza":
         pizza_main()
