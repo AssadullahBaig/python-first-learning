@@ -10,6 +10,8 @@
 ######
 
 
+###### FINISHED ########
+
 # Requirements ##
 # 1. Ask for pizza type
 #   Example:
@@ -44,6 +46,8 @@
 # 3. Remove redundant code in the start_system function
 # 4. Add the new requirement if possible
 
+#######################
+
 # Constraints ###
 # No global variables. The functions should return the output they generate
 # No functions inside functions. All functions should be add the root level (0 tab-space)
@@ -56,6 +60,31 @@
 # New Tasks
 # 1. Add support for different toppings for different pizzas
 # 2. Order another pizza prompt should show error when input is neither yes nor no
+
+
+#---------------------------------------
+
+def order_burger(available_burgers):
+    order = ("\nPlease specify the burger u want or type quit to finish: ")
+    print("\nAvailable burgers are: ")
+    for burger, prices in available_burgers.items():
+        print(burger + ": " + str(prices) + ", ", end="")
+    while True:
+        burger = input(order)
+        if burger in available_burgers:
+            print(f"You ordered a {burger} burger. ")
+            return burger
+        else:
+            print("Im sorry we don't have that burger.")
+
+def finalize_burger_order(available_burgers, total_burger):
+    total_cost = 0
+    print('Your ordered burgers:')
+    for i in total_burger:
+        print(f"{i['burger']} burger: ${i['price']}" )
+        total_cost += i['price']
+    print("Total Cost: $" + str(total_cost))
+    print("Thank you for ordering with us")
 
 def order_pizza(available_pizzas):
     order = ("\nPlease specify the pizza or type quit to finish: ")
@@ -88,21 +117,18 @@ def order_toppings(pizza, available_toppings, supported_toppings):
             print("Im sorry we don't have that topping.")
     return toppings_list
    
-
 def finalize_order(available_pizzas, available_toppings, total_stuff):
     total_cost = 0
     print('Your ordered pizzas:')
-    
     for i in total_stuff:
         print(f"{i['pizza']} pizza with toppings: {', '.join(o for o in i['toppings'])} : ${i['price']}" )
         total_cost += i['price']
     print("Total Cost: $" + str(total_cost))
     print("Thank you for ordering with us")
 
-def start_system():
+def pizza_main():
     available_pizzas = {'spicy': 600, 'mexican': 700, 'calzone': 600, 'tikka': 700, 'veg': 650}
     available_toppings = {'mushroom': 10, 'onions': 15, 'green pepper': 10, 'extra cheese': 40}
-    print("Hi, welcome to our Saleem Shady Pizza Ordering")
     total_stuff = []
     supported_toppings = {
         "spicy": ("green pepper", "onions"),
@@ -129,4 +155,30 @@ def start_system():
 
     finalize_order(available_pizzas, available_toppings, total_stuff)
 
-start_system()
+def burger_main():
+    available_burgers = {"zinger": 200, "fish": 350, "beef": 250, "patty": 150, "grilled": 260}
+    total_burger= []
+    another_burger = True
+    while(another_burger is True):
+        burger = order_burger(available_burgers)
+        total_burger.append({"burger": burger, "price": available_burgers[burger]})
+        print(f"Preparing one {burger} burger. ")
+        extra_burger = input("Would you like to order another burger? (yes/no): ")
+        if extra_burger == "no":
+            another_burger = False
+        else:
+            another_burger = True
+    finalize_burger_order(available_burgers, total_burger)
+
+def order_select():
+    print("Hi, welcome to our Saleem Shady food Ordering")
+    menu = input("Please select the type of food you want (Burger, pizza): ")
+    menu = menu.lower()
+    if menu == "pizza":
+        pizza_main()
+    elif menu == "burger":
+        burger_main()  
+order_select()
+
+
+
