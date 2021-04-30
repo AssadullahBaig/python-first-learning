@@ -77,14 +77,6 @@ def order_burger(available_burgers):
         else:
             print("Im sorry we don't have that burger.")
 
-def finalize_burger_order(available_burgers, total_burger):
-    total_cost = 0
-    print('Your ordered burgers:')
-    for i in total_burger:
-        print(f"{i['burger']} burger: ${i['price']}" )
-        total_cost += i['price']
-    print("Total Cost: $" + str(total_cost))
-
 def order_pizza(available_pizzas):
     order = ("\nPlease specify the pizza ")
     print("\nAvailable Pizzas are: ")
@@ -98,13 +90,14 @@ def order_pizza(available_pizzas):
         else:
             print("Im sorry we don't have that pizza.")
 
-def order_toppings(pizza, available_toppings, supported_toppings):
+def order_toppings(pizza, topping_prices, supported_toppings):
+    toppings_list = []
     extra_toppings =("\nPlease specify topping or type quit to finish ordering: ")
     print("\nAvailable toppings are: ")
     for topping in supported_toppings[pizza]:
-        price = available_toppings[topping]
+        price = topping_prices[topping]
         print(topping + ": " + str(price) + ", ", end="")
-    toppings_list = []
+
     while True:
         topping = input(extra_toppings)
         if topping == "quit":
@@ -116,26 +109,25 @@ def order_toppings(pizza, available_toppings, supported_toppings):
             print("Im sorry we don't have that topping.")
     return toppings_list
    
-def finalize_order(available_pizzas, available_toppings, total_stuff, available_burgers, total_burger):
+def finalize_order(available_pizzas, topping_prices, total_pizzas, available_burgers, total_burgers):
     total_cost = 0
     print('Your ordered burgers:')
-    for i in total_burger:
+    for i in total_burgers:
         print(f"{i['burger']} burger: ${i['price']}" )
         total_cost += i['price']
     print('Your ordered pizzas:')
-    for i in total_stuff:
+    for i in total_pizzas:
         print(f"{i['pizza']} pizza with toppings: {', '.join(o for o in i['toppings'])} : ${i['price']}" )
         total_cost += i['price']
     print("Total Cost: $" + str(total_cost))
 
-def complete_order():
-    # Burger Assets
+def main():
+    total_burgers = []
+    total_pizzas = []
+    
     available_burgers = {"zinger": 200, "fish": 350, "beef": 250, "patty": 150, "grilled": 260}
-    total_burger = []
-    # Pizza Assets
     available_pizzas = {'spicy': 600, 'mexican': 700, 'calzone': 600, 'tikka': 700, 'veg': 650}
-    available_toppings = {'mushroom': 10, 'onions': 15, 'green pepper': 10, 'extra cheese': 40}
-    total_stuff = []
+    topping_prices = {'mushroom': 10, 'onions': 15, 'green pepper': 10, 'extra cheese': 40}
     supported_toppings = {
         "spicy": ("green pepper", "onions"),
         "mexican": ("extra cheese", "onions"),
@@ -144,29 +136,29 @@ def complete_order():
         "veg": ("onions", "mushroom"),
     }
 
-    # Functions
     print("Hi, welcome to our Saleem Shady food Ordering")
-    continue_ = True
-    while(continue_):
+    isContinueOrder = True
+    while(isContinueOrder):
         menu = input("Please select the type of food you want (burger, pizza): ")
         if menu == 'pizza':
             pizza = order_pizza(available_pizzas)
-            toppings = order_toppings(pizza, available_toppings, supported_toppings)
+            toppings = order_toppings(pizza, topping_prices, supported_toppings)
             topping_price = 0
             for i in toppings:
-                topping_price += available_toppings[i]
-            total_stuff.append({'pizza': pizza, 'price': available_pizzas[pizza]+topping_price, 'toppings': toppings})
+                topping_price += topping_prices[i]
+            total_pizzas.append({'pizza': pizza, 'price': available_pizzas[pizza]+topping_price, 'toppings': toppings})
             print(f"Preparing one {pizza} pizza with toppings: {', '.join(toppings)}")
         elif menu == 'burger':
             burger = order_burger(available_burgers)
-            total_burger.append({"burger": burger, "price": available_burgers[burger]})
+            total_burgers.append({"burger": burger, "price": available_burgers[burger]})
             print(f"Preparing one {burger} burger. ")
+        
         another_order = input("Would you like to do an another order? (yes/no): ")
         if another_order == "no":
-            continue_ = False
-            finalize_order(available_pizzas, available_toppings, total_stuff, available_burgers, total_burger)
+            isContinueOrder = False
+            finalize_order(available_pizzas, topping_prices, total_pizzas, available_burgers, total_burgers)
             print('\n Thank you for ordering with us')
         elif another_order == 'yes':
-            continue_ = True
+            isContinueOrder = True
        
-complete_order()
+main()
