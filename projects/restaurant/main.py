@@ -125,7 +125,7 @@ def order_pizzas():
     topping_price = 0
     for i in toppings:
         topping_price += topping_prices[i]
-        return {'pizza': pizza, 'price': available_pizzas[pizza]+topping_price, 'toppings': toppings}  
+    return {'pizza': pizza, 'price': available_pizzas[pizza]+topping_price, 'toppings': toppings}
     
 def finalize_order(total_pizzas, total_burgers):
     total_cost = 0
