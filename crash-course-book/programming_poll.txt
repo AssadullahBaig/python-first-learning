@@ -6,3 +6,4 @@ yes
 yes
 no
 yes
+yes
